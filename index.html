@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jean Lou Nivault — Expert-comptable indépendant</title>
+
+<!-- Page privée, volontairement non destinée à être indexée -->
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --paper:#F4F3EF;
+  --paper-dim:#ECEAE4;
+  --ink:#17181A;
+  --charcoal:#26282A;
+  --graphite:#5A5D60;
+  --mist:#9A9D9F;
+  --hair: rgba(23,24,26,0.13);
+  --hair-strong: rgba(23,24,26,0.26);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Work Sans', -apple-system, sans-serif;
+  font-size:16px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3{
+  font-family:'Fraunces', Georgia, serif;
+  font-weight:500;
+  color:var(--charcoal);
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+a{ color:inherit; }
+:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+
+/* ---------- shared assets — fichiers externes, à déposer à côté du HTML ---------- */
+.photo-bg{
+  background-image:url('montagne.jpg');
+  background-repeat:no-repeat;
+}
+.ordre-bg{
+  background-image:url('cachet-ordre.png');
+  background-repeat:no-repeat;
+  background-size:contain;
+  background-position:center;
+}
+
+/* ---------- PAGE ROUTING (fondu doux à l'arrivée sur une page) ---------- */
+.page{ display:none; }
+.page.active{ display:block; animation: pageIn .55s cubic-bezier(.19,.82,.28,1) both; }
+@keyframes pageIn{
+  from{ opacity:0; transform:translateY(10px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+/* ---------- PHOTO HEADER (hero on home, banner on other pages) ---------- */
+.photo-header{
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  align-items:flex-end;
+}
+.photo-header--home{ min-height:88vh; }
+.photo-header--page{ height:380px; }
+
+/* Wrapper : ne porte QUE le parallax (JS, propriété transform). */
+.photo-header__img{
+  position:absolute;
+  top:-18%; left:-3%; right:-3%; height:136%;
+  overflow:hidden;
+  will-change:transform;
+}
+/* Couche interne : ne porte QUE le zoom d'entrée (CSS, propriété transform
+   sur un élément différent — aucun conflit avec le parallax JS). */
+.photo-header__img-inner{
+  position:absolute; inset:0;
+  background-size:cover;
+  transform:scale(1.1);
+  animation: kenBurns 1.7s cubic-bezier(.19,.82,.28,1) both;
+}
+@keyframes kenBurns{ from{ transform:scale(1.1); } to{ transform:scale(1); } }
+.photo-header--page .photo-header__img-inner{ animation-duration:1.35s; }
+
+.photo-header--home .photo-header__img-inner{ background-position:center 38%; }
+.photo-header--page .photo-header__img-inner{ background-position:center 66%; }
+
+/* Dégradé étalé sur une large portion de la photo (pas resserré dans les
+   derniers %) pour que la transition vers le menu soit vraiment progressive,
+   sans jamais empiéter sur la zone où repose le texte. */
+.photo-header__scrim{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg,
+    rgba(8,8,9,0.04) 0%,
+    rgba(8,8,9,0.10) 20%,
+    rgba(8,8,9,0.22) 38%,
+    rgba(8,8,9,0.42) 55%,
+    rgba(8,8,9,0.62) 70%,
+    rgba(8,8,9,0.74) 84%,
+    var(--paper) 100%);
+}
+.photo-header--page .photo-header__scrim{
+  background:linear-gradient(180deg,
+    rgba(8,8,9,0.22) 0%,
+    rgba(8,8,9,0.40) 32%,
+    rgba(8,8,9,0.58) 55%,
+    rgba(8,8,9,0.70) 70%,
+    rgba(8,8,9,0.78) 80%,
+    var(--paper) 100%);
+}
+
+.photo-header__content{
+  position:relative; z-index:2;
+  width:100%;
+  padding: 3.5rem 3rem;
+}
+.photo-header--home .photo-header__content{
+  padding-bottom: 8rem;
+}
+.photo-header--page .photo-header__content{
+  padding-bottom: 4.5rem;
+}
+
+@keyframes riseIn{
+  from{ opacity:0; transform:translateY(16px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+.hero__eyebrow{
+  margin:0 0 1.1rem; font-size:0.86rem; letter-spacing:0.03em; color:#EDEBE6; opacity:0.9;
+  animation: riseIn .75s cubic-bezier(.19,.82,.28,1) both; animation-delay:.05s;
+}
+.hero__name{
+  margin:0 0 0.8rem; font-size:clamp(2.3rem, 6vw, 4.4rem); line-height:1.04; color:#fff;
+  animation: riseIn .85s cubic-bezier(.19,.82,.28,1) both; animation-delay:.22s;
+}
+.hero__title{
+  margin:0 0 1.3rem; font-family:'Fraunces', serif; font-style:italic; font-weight:400; font-size:clamp(1.05rem, 2.1vw, 1.4rem); color:#EDEBE6;
+  animation: riseIn .85s cubic-bezier(.19,.82,.28,1) both; animation-delay:.4s;
+}
+.hero__loc{
+  margin:0; font-size:0.88rem; color:#D8D5CE;
+  animation: riseIn .85s cubic-bezier(.19,.82,.28,1) both; animation-delay:.56s;
+}
+
+.breadcrumb{
+  margin:0 0 0.6rem; font-size:0.82rem; color:#D8D5CE;
+  animation: riseIn .7s cubic-bezier(.19,.82,.28,1) both; animation-delay:.05s;
+}
+.breadcrumb a{ text-decoration:underline; text-underline-offset:2px; }
+.banner__title{
+  margin:0; font-size:clamp(1.7rem, 4.2vw, 2.5rem); color:#fff;
+  animation: riseIn .8s cubic-bezier(.19,.82,.28,1) both; animation-delay:.18s;
+}
+
+/* ---------- NAV (sits right below the photo, sticks on scroll) ---------- */
+nav.menu{
+  position:sticky; top:0; z-index:30;
+  background:linear-gradient(180deg, var(--paper) 0%, var(--paper-dim) 100%);
+  border-bottom:1px solid var(--hair);
+}
+.menu__row{ max-width:1180px; margin:0 auto; display:flex; flex-wrap:wrap; }
+.menu__row > *{ animation: navIn .55s cubic-bezier(.19,.82,.28,1) both; }
+.menu__row > *:nth-child(1){ animation-delay:.02s; }
+.menu__row > *:nth-child(2){ animation-delay:.08s; }
+.menu__row > *:nth-child(3){ animation-delay:.14s; }
+.menu__row > *:nth-child(4){ animation-delay:.2s; }
+.menu__row > *:nth-child(5){ animation-delay:.26s; }
+.menu__row > *:nth-child(6){ animation-delay:.32s; }
+@keyframes navIn{ from{ opacity:0; transform:translateY(-9px); } to{ opacity:1; transform:translateY(0); } }
+
+.menu__home{
+  display:flex; align-items:center;
+  font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+  font-size:1rem;
+  padding: 1.3rem 1.7rem;
+  border-right:1px solid var(--hair);
+  text-decoration:none;
+  color:var(--ink);
+  transition:opacity .25s ease;
+}
+.menu__home:hover{ opacity:.6; }
+
+.menu__item{ position:relative; border-right:1px solid var(--hair); }
+
+.menu__trigger{
+  appearance:none; background:none; border:none; cursor:pointer;
+  font-family:'Work Sans', sans-serif; font-size:0.86rem; font-weight:500; letter-spacing:0.02em;
+  color:var(--charcoal);
+  padding: 1.3rem 1.5rem;
+  display:flex; align-items:center; gap:0.55rem;
+  position:relative;
+  transition:transform .15s cubic-bezier(.4,0,.2,1);
+}
+.menu__trigger:active{ transform:scale(0.96); }
+.menu__trigger::after{
+  content:''; position:absolute; left:1.3rem; right:1.3rem; bottom:0; height:2px;
+  background:var(--ink); transform:scaleX(0); transform-origin:left;
+  transition:transform .32s cubic-bezier(.4,0,.2,1);
+}
+.menu__trigger:hover::after, .menu__trigger[aria-expanded="true"]::after{ transform:scaleX(1); }
+.menu__trigger:hover, .menu__trigger[aria-expanded="true"]{ color:var(--ink); }
+
+.menu__caret{ width:7px; height:7px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(45deg); transition:transform .28s cubic-bezier(.4,0,.2,1); margin-top:-3px; }
+.menu__trigger[aria-expanded="true"] .menu__caret{ transform:rotate(-135deg); margin-top:3px; }
+
+.menu__panel{
+  display:none; position:absolute; top:100%; left:0; min-width:255px;
+  background:var(--ink); padding:0.6rem 0;
+  box-shadow:0 16px 32px -12px rgba(10,10,10,0.4);
+  animation: panelDrop .22s cubic-bezier(.19,.82,.28,1) both;
+}
+@keyframes panelDrop{ from{ opacity:0; transform:translateY(-6px) scale(.98); } to{ opacity:1; transform:translateY(0) scale(1); } }
+.menu__item.open .menu__panel{ display:block; }
+
+.menu__panel a{
+  display:block; padding:0.62rem 1.4rem; font-size:0.88rem;
+  color:#DCDAD4; text-decoration:none; border-left:2px solid transparent;
+  transition:border-color .22s cubic-bezier(.4,0,.2,1), background-color .22s ease, color .22s ease;
+}
+.menu__panel a:hover, .menu__panel a[aria-current="page"]{
+  border-left-color:#fff; background:rgba(255,255,255,0.05); color:#fff;
+}
+
+/* ---------- Badge de l'Ordre — fixe, toujours au même endroit ---------- */
+.order-badge{
+  position:fixed;
+  top:1.1rem; right:1.1rem;
+  z-index:60;
+  width:78px;
+  aspect-ratio: 480 / 257;
+  filter:drop-shadow(0 3px 10px rgba(0,0,0,0.35));
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+  animation: badgeIn .7s cubic-bezier(.19,.82,.28,1) .25s both;
+}
+@keyframes badgeIn{ from{ opacity:0; transform:translateY(-14px); } to{ opacity:1; transform:translateY(0); } }
+.order-badge:hover{ transform:scale(1.04); }
+@media (max-width:640px){
+  .order-badge{ top:0.7rem; right:0.7rem; width:56px; }
+}
+
+/* ---------- CONTENT ---------- */
+main{ max-width:740px; margin:0 auto; padding: 13rem 1.75rem 2rem; }
+
+.group__head{ margin-bottom:3.5rem; }
+.group__eyebrow{ display:flex; align-items:baseline; gap:0.8rem; margin-bottom:0.9rem; }
+.group__num{ font-family:'Fraunces', serif; font-style:italic; color:var(--mist); font-size:1rem; }
+.group__title{ font-size:clamp(1.7rem, 3.4vw, 2.2rem); }
+.group__rule{ width:44px; height:2px; background:var(--ink); border:none; margin: 2.6rem 0 2.2rem; transform-origin:left; }
+.group__lede{ font-family:'Fraunces', serif; font-style:italic; font-weight:400; color:var(--graphite); font-size:1.1rem; line-height:1.6; margin-bottom:0.4rem; }
+
+/* Le conteneur .group__head ne bouge pas lui-même : ce sont ses enfants
+   qui s'enchaînent l'un après l'autre une fois qu'il entre dans l'écran. */
+.js-reveal-ready .group__eyebrow{ opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s cubic-bezier(.4,0,.2,1); }
+.js-reveal-ready .group__head.is-visible .group__eyebrow{ opacity:1; transform:translateY(0); }
+.js-reveal-ready .group__rule{ transform:scaleX(0); transition:transform .6s cubic-bezier(.19,.82,.28,1); transition-delay:.16s; }
+.js-reveal-ready .group__head.is-visible .group__rule{ transform:scaleX(1); }
+.js-reveal-ready .group__lede{ opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s cubic-bezier(.4,0,.2,1); transition-delay:.3s; }
+.js-reveal-ready .group__head.is-visible .group__lede{ opacity:1; transform:translateY(0); }
+
+.block{ padding: 4rem 0; border-bottom:1px solid var(--hair); }
+.block:first-of-type{ padding-top:0; }
+.block:last-child{ border-bottom:none; }
+.block__title{ font-family:'Work Sans', sans-serif; font-size:1.15rem; font-weight:600; color:var(--charcoal); margin:0 0 0.9rem; }
+.block p{ margin:0; max-width:64ch; color:var(--graphite); }
+.block p + p{ margin-top:1rem; }
+
+.js-reveal-ready .block__title{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s cubic-bezier(.4,0,.2,1); }
+.js-reveal-ready .block.is-visible .block__title{ opacity:1; transform:translateY(0); }
+.js-reveal-ready .block p{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s cubic-bezier(.4,0,.2,1); }
+.js-reveal-ready .block.is-visible p{ opacity:1; transform:translateY(0); }
+.js-reveal-ready .block p:nth-of-type(1){ transition-delay:.14s; }
+.js-reveal-ready .block p:nth-of-type(2){ transition-delay:.24s; }
+.js-reveal-ready .block p:nth-of-type(3){ transition-delay:.34s; }
+
+.siblings{ max-width:740px; margin: 1.5rem auto 0; padding: 0 1.75rem 9rem; }
+.siblings__rule{ width:44px; height:2px; background:var(--hair-strong); border:none; margin: 0 0 2.4rem; }
+.siblings__label{ font-size:0.8rem; color:var(--mist); margin:0 0 1.3rem; }
+.siblings__list{ display:flex; flex-direction:column; gap:0.9rem; }
+.siblings__list a{
+  font-size:0.98rem; font-weight:500; text-decoration:none; color:var(--charcoal);
+  padding:0.15rem 0; border-bottom:1px solid transparent; width:max-content; display:inline-block;
+  transition:border-color .25s cubic-bezier(.4,0,.2,1), transform .25s cubic-bezier(.4,0,.2,1), color .25s ease;
+}
+.siblings__list a[aria-current="page"]{ color:var(--mist); font-weight:400; pointer-events:none; }
+.siblings__list a:not([aria-current="page"]):hover{ border-bottom-color:var(--ink); transform:translateX(5px); }
+
+.js-reveal-ready .siblings__rule{ transform:scaleX(0); transition:transform .6s cubic-bezier(.19,.82,.28,1); }
+.js-reveal-ready .siblings.is-visible .siblings__rule{ transform:scaleX(1); }
+.js-reveal-ready .siblings__label{ opacity:0; transition:opacity .5s ease; transition-delay:.1s; }
+.js-reveal-ready .siblings.is-visible .siblings__label{ opacity:1; }
+.js-reveal-ready .siblings__list a{ opacity:0; transform:translateY(10px) translateX(0); transition:opacity .5s ease, transform .5s cubic-bezier(.4,0,.2,1), border-color .25s cubic-bezier(.4,0,.2,1); }
+.js-reveal-ready .siblings.is-visible .siblings__list a{ opacity:1; transform:translateY(0); }
+.js-reveal-ready .siblings__list a:nth-child(1){ transition-delay:.18s; }
+.js-reveal-ready .siblings__list a:nth-child(2){ transition-delay:.28s; }
+.js-reveal-ready .siblings__list a:nth-child(3){ transition-delay:.38s; }
+
+/* ---------- SCROLL REVEAL (Intersection Observer) ----------
+   Progressive enhancement : sans JS ou avec "reduced motion", le
+   contenu reste visible normalement (pas de classe .js-reveal-ready). */
+.js-reveal-ready .reveal{
+  opacity:0; transform:translateY(26px);
+  transition: opacity .8s cubic-bezier(.19,.82,.28,1), transform .8s cubic-bezier(.19,.82,.28,1);
+}
+.js-reveal-ready .reveal.is-visible{ opacity:1; transform:translateY(0); }
+.js-reveal-ready .reveal--img{ transform:translateY(22px) scale(0.9); }
+.js-reveal-ready .reveal--img.is-visible{ transform:translateY(0) scale(1); }
+
+.home-intro{ max-width:900px; margin:0 auto; padding: 7rem 2rem 8rem; }
+.home-intro__lede{ font-family:'Fraunces', serif; font-style:italic; font-weight:400; font-size:clamp(1.3rem,2.6vw,1.7rem); color:var(--charcoal); max-width:26ch; margin:0 0 1.6rem; line-height:1.35; }
+.home-intro__body{ max-width:58ch; color:var(--graphite); font-size:1.04rem; line-height:1.75; }
+.home-intro__rule{ width:56px; height:2px; background:var(--ink); margin:0 0 1.8rem; border:none; transform-origin:left; }
+
+.js-reveal-ready .home-intro__rule{ transform:scaleX(0); transition:transform .7s cubic-bezier(.19,.82,.28,1); }
+.js-reveal-ready .home-intro.is-visible .home-intro__rule{ transform:scaleX(1); }
+.js-reveal-ready .home-intro__lede{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s cubic-bezier(.4,0,.2,1); transition-delay:.14s; }
+.js-reveal-ready .home-intro.is-visible .home-intro__lede{ opacity:1; transform:translateY(0); }
+.js-reveal-ready .home-intro__body{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s cubic-bezier(.4,0,.2,1); transition-delay:.28s; }
+.js-reveal-ready .home-intro.is-visible .home-intro__body{ opacity:1; transform:translateY(0); }
+
+/* ---------- FOOTER ---------- */
+footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
+.footer__inner{ max-width:920px; margin:0 auto; padding: 7.5rem 1.75rem 6rem; display:flex; flex-wrap:wrap; gap:3rem; justify-content:space-between; align-items:flex-start; }
+.footer__inner > .reveal:nth-child(1){ transition-delay:0s; }
+.footer__inner > .reveal:nth-child(2){ transition-delay:.12s; }
+.footer__inner > .reveal:nth-child(3){ transition-delay:.24s; }
+.footer__logo{
+  width:160px; height:auto; aspect-ratio:470/727; flex-shrink:0;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  background-image:url('logo-footer.png');
+}
+.footer__name{ font-family:'Fraunces', serif; font-size:1.15rem; margin:0 0 0.3rem; color:#fff; }
+.footer__meta{ font-size:0.85rem; color:#B9B7B1; line-height:1.7; }
+.footer__meta a{ color:#fff; text-decoration:underline; text-underline-offset:2px; transition:opacity .2s ease; }
+.footer__meta a:hover{ opacity:.7; }
+.footer__note{ font-size:0.77rem; color:rgba(255,255,255,0.38); max-width:320px; line-height:1.6; }
+
+@media (max-width:640px){
+  .menu__item{ border-right:none; border-bottom:1px solid var(--hair); width:100%; }
+  .menu__row{ flex-direction:column; }
+  .menu__home{ border-right:none; border-bottom:1px solid var(--hair); }
+  .menu__panel{ position:static; box-shadow:none; }
+  .footer__inner{ flex-direction:column; }
+  .photo-header--page{ height:300px; }
+  .photo-header__content{ padding:2.2rem 1.5rem; }
+  .photo-header--home .photo-header__content{ padding-bottom:5rem; }
+  .photo-header--page .photo-header__content{ padding-bottom:3rem; }
+  main{ padding:8rem 1.25rem 1.5rem; }
+  .siblings{ padding:0 1.25rem 6rem; }
+  .home-intro{ padding:4.5rem 1.4rem 5.5rem; }
+  .footer__inner{ padding:5rem 1.25rem 4rem; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  .menu__caret, .menu__panel, .hero__eyebrow, .hero__name, .hero__title, .hero__loc, .breadcrumb, .banner__title, .photo-header__img-inner, .page, .group__head, .block, .siblings, .home-intro, .home-intro__rule, .menu__row > *, .order-badge{ transition:none; animation:none; }
+  .photo-header__img{ transform:none !important; }
+  .photo-header__img-inner{ transform:none !important; }
+}
+
+</style>
+</head>
+<body>
+<div class="order-badge ordre-bg" role="img" aria-label="Ordre des experts-comptables" data-target="home" style="cursor:pointer;"></div>
+<div id="app">
+  <section class="page active" id="home">
+    <header class="photo-header photo-header--home">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="hero__eyebrow">Site privé — non référencé</p>
+        <h1 class="hero__name">Jean&nbsp;Lou Nivault</h1>
+        <p class="hero__title">Expert-comptable indépendant</p>
+        <p class="hero__loc">Spay, Sarthe — inscrit au tableau de l'Ordre des experts-comptables des Pays de la Loire</p>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <div class="home-intro reveal">
+      <hr class="home-intro__rule">
+      <p class="home-intro__lede">Une présentation pensée pour être lue avant notre premier échange.</p>
+      <p class="home-intro__body">Ce site rassemble, en un seul endroit, tout ce qu'il est utile de savoir avant de me confier votre comptabilité : mon parcours et mes diplômes, la façon dont je conçois ce métier, l'accompagnement que je propose au quotidien, les outils que j'utilise pour suivre vos chiffres, et le cadre déontologique dans lequel je travaille. Prenez le temps de parcourir les rubriques du menu ci-dessus. Chacune se lit en quelques instants, et vous saurez exactement à qui vous avez affaire avant même notre premier rendez-vous.</p>
+    </div>
+  </section>
+  <section class="page" id="histoire">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — I. Mon CV</p>
+        <h1 class="banner__title">Mon histoire</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">I.</span><h2 class="group__title">Mon CV</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">Un parcours construit pour comprendre vos enjeux, pas seulement vos comptes.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Mon histoire</h3>
+        <p>J'ai grandi avec l'idée qu'un chiffre, seul, ne raconte rien : c'est la façon dont on l'explique à un dirigeant qui lui donne du sens. C'est cette conviction qui m'a mené vers l'expertise comptable, puis vers l'exercice indépendant, où je peux suivre chaque dossier dans la durée plutôt que de le confier à une chaîne de production.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Mon CV »</p>
+      <div class="siblings__list">
+        <a href="#histoire" data-target="histoire" aria-current="page">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="parcours">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — I. Mon CV</p>
+        <h1 class="banner__title">Mon parcours</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">I.</span><h2 class="group__title">Mon CV</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">Un parcours construit pour comprendre vos enjeux, pas seulement vos comptes.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Mon parcours</h3>
+        <p>Avant de m'installer à mon compte à Spay, j'ai construit mon expérience en cabinet, au contact de dirigeants de TPE et de PME de secteurs variés (artisanat, commerce, professions libérales). Ce passage m'a appris à adapter mon discours à chaque réalité d'entreprise plutôt qu'à appliquer une méthode unique.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Mon CV »</p>
+      <div class="siblings__list">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours" aria-current="page">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="diplomes">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — I. Mon CV</p>
+        <h1 class="banner__title">Mes diplômes</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">I.</span><h2 class="group__title">Mon CV</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">Un parcours construit pour comprendre vos enjeux, pas seulement vos comptes.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Mes diplômes</h3>
+        <p>Diplômé d'expertise comptable (DEC), inscrit au tableau de l'Ordre des experts-comptables des Pays de la Loire. Ce diplôme s'accompagne d'une obligation de formation continue que je prends au sérieux, notamment sur les évolutions fiscales et les outils numériques du métier.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Mon CV »</p>
+      <div class="siblings__list">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes" aria-current="page">Mes diplômes</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="philosophie">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — II. Ma Vision</p>
+        <h1 class="banner__title">Ma philosophie de travail</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">II.</span><h2 class="group__title">Ma Vision</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">La philosophie qui guide chaque dossier que je prends en charge.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Ma philosophie de travail</h3>
+        <p>Je préfère prévenir un problème que le corriger. Cela suppose des échanges réguliers avec mes clients, pas seulement au moment du bilan, et une disponibilité réelle : un expert-comptable qu'on ne joint jamais ne sert pas à grand-chose.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Ma Vision »</p>
+      <div class="siblings__list">
+        <a href="#philosophie" data-target="philosophie" aria-current="page">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="positionnement">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — II. Ma Vision</p>
+        <h1 class="banner__title">Mon positionnement</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">II.</span><h2 class="group__title">Ma Vision</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">La philosophie qui guide chaque dossier que je prends en charge.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Mon positionnement</h3>
+        <p>Indépendant par choix, je limite volontairement le nombre de dossiers que je suis pour garder une relation directe avec chaque dirigeant. Pas d'interlocuteur qui change tous les six mois, pas de dossier traité par un assistant que je n'ai jamais rencontré.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Ma Vision »</p>
+      <div class="siblings__list">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement" aria-current="page">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="logo">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — II. Ma Vision</p>
+        <h1 class="banner__title">Sens de mon logo</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">II.</span><h2 class="group__title">Ma Vision</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">La philosophie qui guide chaque dossier que je prends en charge.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Sens de mon logo</h3>
+        <p>« CAUTE PROGREDIOR » — j'avance avec prudence. Cette devise, portée par l'Ordre, résume assez bien ma façon de conseiller : avancer, mais toujours après avoir vérifié le terrain.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Ma Vision »</p>
+      <div class="siblings__list">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo" aria-current="page">Sens de mon logo</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="creation">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — III. Mon accompagnement</p>
+        <h1 class="banner__title">Création d'entreprises & juridique</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">III.</span><h2 class="group__title">Mon accompagnement</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">Un accompagnement pensé pour suivre votre entreprise à chaque étape.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Création d'entreprises & juridique</h3>
+        <p>Choix de la structure, rédaction des statuts, formalités d'immatriculation, premiers choix fiscaux et sociaux : je vous accompagne dès les premières décisions, celles qui sont ensuite coûteuses à corriger.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Mon accompagnement »</p>
+      <div class="siblings__list">
+        <a href="#creation" data-target="creation" aria-current="page">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="compta-fiscal">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — III. Mon accompagnement</p>
+        <h1 class="banner__title">Comptabilité & Fiscalité</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">III.</span><h2 class="group__title">Mon accompagnement</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">Un accompagnement pensé pour suivre votre entreprise à chaque étape.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Comptabilité & Fiscalité</h3>
+        <p>Tenue ou supervision de la comptabilité, établissement des comptes annuels, liasses fiscales et déclarations courantes, avec un point d'étape régulier pour anticiper l'impôt plutôt que le découvrir en fin d'exercice.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Mon accompagnement »</p>
+      <div class="siblings__list">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal" aria-current="page">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="gestion">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — III. Mon accompagnement</p>
+        <h1 class="banner__title">Gestion & quotidien</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">III.</span><h2 class="group__title">Mon accompagnement</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">Un accompagnement pensé pour suivre votre entreprise à chaque étape.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Gestion & quotidien</h3>
+        <p>Tableaux de bord, suivi de trésorerie, prévisionnels : des outils pensés pour être réellement lus et utilisés, pas pour dormir dans un tiroir jusqu'au bilan suivant.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Mon accompagnement »</p>
+      <div class="siblings__list">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion" aria-current="page">Gestion & quotidien</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="pennylane">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — IV. Mes outils</p>
+        <h1 class="banner__title">Pennylane</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">IV.</span><h2 class="group__title">Mes outils</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">Les plateformes que j'utilise au quotidien pour vous.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Pennylane</h3>
+        <p>Ma plateforme de comptabilité au quotidien : synchronisation bancaire, notes de frais et factures dématérialisées, avec un accès partagé qui vous permet de suivre vos chiffres en temps réel plutôt qu'une fois par trimestre.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Mes outils »</p>
+      <div class="siblings__list">
+        <a href="#pennylane" data-target="pennylane" aria-current="page">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="silae">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — IV. Mes outils</p>
+        <h1 class="banner__title">Silae</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">IV.</span><h2 class="group__title">Mes outils</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">Les plateformes que j'utilise au quotidien pour vous.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Silae</h3>
+        <p>Pour la gestion de la paie : bulletins, déclarations sociales nominatives et suivi des obligations liées à l'emploi de vos salariés, en lien avec votre comptabilité générale.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Mes outils »</p>
+      <div class="siblings__list">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae" aria-current="page">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="rca">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — IV. Mes outils</p>
+        <h1 class="banner__title">RCA</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">IV.</span><h2 class="group__title">Mes outils</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">Les plateformes que j'utilise au quotidien pour vous.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">RCA</h3>
+        <p>Mon outil de revue et de contrôle des comptes, utilisé en amont de chaque arrêté pour sécuriser la qualité des chiffres avant qu'ils ne vous soient présentés.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Mes outils »</p>
+      <div class="siblings__list">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca" aria-current="page">RCA</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="normes">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — V. Mes process</p>
+        <h1 class="banner__title">Les normes de notre profession</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">V.</span><h2 class="group__title">Mes process</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">Le cadre déontologique et les habitudes qui structurent mon travail.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Les normes de notre profession</h3>
+        <p>La profession d'expert-comptable est encadrée par un code de déontologie et des normes professionnelles : secret professionnel, indépendance, compétence. Elles structurent la façon dont chaque dossier est tenu et contrôlé.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Mes process »</p>
+      <div class="siblings__list">
+        <a href="#normes" data-target="normes" aria-current="page">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="serment">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — V. Mes process</p>
+        <h1 class="banner__title">Le serment de l'expert-comptable</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">V.</span><h2 class="group__title">Mes process</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">Le cadre déontologique et les habitudes qui structurent mon travail.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Le serment de l'expert-comptable</h3>
+        <p>En prêtant serment devant la Cour d'appel, je me suis engagé à exercer ma profession avec conscience et probité. C'est un engagement que je garde en tête à chaque dossier, y compris quand la réponse la plus simple n'est pas la bonne.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Mes process »</p>
+      <div class="siblings__list">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment" aria-current="page">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="process">
+    <header class="photo-header photo-header--page">
+      <div class="photo-header__img"><div class="photo-header__img-inner photo-bg"></div></div>
+      <div class="photo-header__scrim"></div>
+      <div class="photo-header__content">
+        <p class="breadcrumb"><a href="#home" data-target="home">Accueil</a> — V. Mes process</p>
+        <h1 class="banner__title">Mes process</h1>
+      </div>
+    </header>
+<nav class="menu" aria-label="Navigation principale">
+  <div class="menu__row">
+    <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#histoire" data-target="histoire">Mon histoire</a>
+        <a href="#parcours" data-target="parcours">Mon parcours</a>
+        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Ma Vision <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+        <a href="#logo" data-target="logo">Sens de mon logo</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mon accompagnement <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes outils <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#pennylane" data-target="pennylane">Pennylane</a>
+        <a href="#silae" data-target="silae">Silae</a>
+        <a href="#rca" data-target="rca">RCA</a>
+      </div>
+    </div>
+    <div class="menu__item">
+      <button class="menu__trigger" aria-expanded="false">Mes process <span class="menu__caret"></span></button>
+      <div class="menu__panel">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <main>
+      <div class="group__head reveal">
+        <div class="group__eyebrow"><span class="group__num">V.</span><h2 class="group__title">Mes process</h2></div>
+        <hr class="group__rule">
+        <p class="group__lede">Le cadre déontologique et les habitudes qui structurent mon travail.</p>
+      </div>
+      <div class="block reveal">
+        <h3 class="block__title">Mes process</h3>
+        <p>Un point de contact unique, un calendrier partagé des échéances, et une revue des comptes avant chaque échéance déclarative : des habitudes simples, mais tenues systématiquement.</p>
+      </div>
+    </main>
+    <div class="siblings reveal">
+      <hr class="siblings__rule">
+      <p class="siblings__label">Dans « Mes process »</p>
+      <div class="siblings__list">
+        <a href="#normes" data-target="normes">Les normes de notre profession</a>
+        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+        <a href="#process" data-target="process" aria-current="page">Mes process</a>
+      </div>
+    </div>
+  </section>
+</div>
+<footer>
+  <div class="footer__inner">
+    <div class="footer__logo reveal reveal--img" role="img" aria-label="Cachet Jean Lou Nivault, expert-comptable inscrit à l'Ordre"></div>
+    <div class="reveal">
+      <p class="footer__name">Jean Lou Nivault</p>
+      <p class="footer__meta">
+        Expert-comptable indépendant<br>
+        1 Rue des Noës — 72700 Spay<br>
+        991 942 699 RCS Le Mans<br>
+        <a href="mailto:jeanlou.nivault.compta@gmail.com">jeanlou.nivault.compta@gmail.com</a><br>
+        Inscrit au tableau de l'Ordre des experts-comptables des Pays de Loire
+      </p>
+    </div>
+    <p class="footer__note reveal">Site non indexé — merci de ne pas le partager publiquement ni de le relayer sur les réseaux.</p>
+  </div>
+</footer>
+<script>
+  var pageIds = Array.from(document.querySelectorAll('.page')).map(function(p){ return p.id; });
+
+  function updateParallax(){
+    var img = document.querySelector('.page.active .photo-header__img');
+    if(!img) return;
+    var header = img.closest('.photo-header');
+    var rect = header.getBoundingClientRect();
+    var offset = Math.max(-70, Math.min(70, rect.top * 0.14));
+    img.style.transform = 'translateY(' + offset + 'px)';
+  }
+
+  function showPage(id){
+    if(pageIds.indexOf(id) === -1){ id = 'home'; }
+    document.querySelectorAll('.page').forEach(function(p){
+      p.classList.toggle('active', p.id === id);
+    });
+    document.querySelectorAll('[data-target]').forEach(function(a){
+      if(a.getAttribute('data-target') === id){ a.setAttribute('aria-current','page'); }
+      else{ a.removeAttribute('aria-current'); }
+    });
+    window.scrollTo(0,0);
+    updateParallax();
+  }
+
+  document.addEventListener('click', function(e){
+    var link = e.target.closest('[data-target]');
+    if(link){
+      e.preventDefault();
+      var id = link.getAttribute('data-target');
+      history.pushState(null, '', '#' + id);
+      showPage(id);
+      document.querySelectorAll('.menu__item.open').forEach(function(o){
+        o.classList.remove('open');
+        o.querySelector('.menu__trigger').setAttribute('aria-expanded','false');
+      });
+      return;
+    }
+    var trigger = e.target.closest('.menu__trigger');
+    if(trigger){
+      var item = trigger.closest('.menu__item');
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.menu__item.open').forEach(function(o){
+        o.classList.remove('open');
+        o.querySelector('.menu__trigger').setAttribute('aria-expanded','false');
+      });
+      if(!isOpen){
+        item.classList.add('open');
+        trigger.setAttribute('aria-expanded','true');
+      }
+      return;
+    }
+    if(!e.target.closest('.menu__item')){
+      document.querySelectorAll('.menu__item.open').forEach(function(o){
+        o.classList.remove('open');
+        o.querySelector('.menu__trigger').setAttribute('aria-expanded','false');
+      });
+    }
+  });
+
+  window.addEventListener('popstate', function(){
+    showPage(location.hash.replace('#','') || 'home');
+  });
+
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if(!ticking){
+      window.requestAnimationFrame(function(){ updateParallax(); ticking = false; });
+      ticking = true;
+    }
+  }, {passive:true});
+  window.addEventListener('resize', updateParallax);
+
+  (function initScrollReveal(){
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduceMotion){ return; }
+    document.documentElement.classList.add('js-reveal-ready');
+    var els = document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){
+      els.forEach(function(el){ el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        entry.target.classList.toggle('is-visible', entry.isIntersecting);
+      });
+    }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+    els.forEach(function(el){ io.observe(el); });
+  })();
+
+  showPage(location.hash.replace('#','') || 'home');
+</script>
+</body>
+</html>
