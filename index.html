@@ -176,7 +176,7 @@ nav.menu{
 }
 .menu__row{ max-width:1180px; margin:0 auto; display:flex; flex-wrap:wrap; }
 .menu__home{ animation: navIn .55s cubic-bezier(.19,.82,.28,1) .02s both; }
-.menu__item{ animation: navIn .55s cubic-bezier(.19,.82,.28,1) .12s both; }
+.menu__categories > .menu__item{ animation: navIn .55s cubic-bezier(.19,.82,.28,1) .12s both; }
 @keyframes navIn{ from{ opacity:0; transform:translateY(-9px); } to{ opacity:1; transform:translateY(0); } }
 
 .menu__home{
@@ -306,27 +306,38 @@ main{ max-width:740px; margin:0 auto; padding: 13rem 1.75rem 2rem; }
 .js-reveal-ready .block p:nth-of-type(2){ transition-delay:.24s; }
 .js-reveal-ready .block p:nth-of-type(3){ transition-delay:.34s; }
 
-.siblings{ max-width:740px; margin: 1.5rem auto 0; padding: 0 1.75rem 9rem; }
-.siblings__rule{ width:44px; height:2px; background:var(--hair-strong); border:none; margin: 0 0 2.4rem; }
-.siblings__label{ font-size:0.8rem; color:var(--mist); margin:0 0 1.3rem; }
-.siblings__list{ display:flex; flex-direction:column; gap:0.9rem; }
-.siblings__list a{
-  font-size:0.98rem; font-weight:500; text-decoration:none; color:var(--charcoal);
-  padding:0.15rem 0; border-bottom:1px solid transparent; width:max-content; display:inline-block;
-  transition:border-color .25s cubic-bezier(.4,0,.2,1), transform .25s cubic-bezier(.4,0,.2,1), color .25s ease;
-}
-.siblings__list a[aria-current="page"]{ color:var(--mist); font-weight:400; pointer-events:none; }
-.siblings__list a:not([aria-current="page"]):hover{ border-bottom-color:var(--ink); transform:translateX(5px); }
 
-.js-reveal-ready .siblings__rule{ transform:scaleX(0); transition:transform .6s cubic-bezier(.19,.82,.28,1); }
-.js-reveal-ready .siblings.is-visible .siblings__rule{ transform:scaleX(1); }
-.js-reveal-ready .siblings__label{ opacity:0; transition:opacity .5s ease; transition-delay:.1s; }
-.js-reveal-ready .siblings.is-visible .siblings__label{ opacity:1; }
-.js-reveal-ready .siblings__list a{ opacity:0; transform:translateY(10px) translateX(0); transition:opacity .5s ease, transform .5s cubic-bezier(.4,0,.2,1), border-color .25s cubic-bezier(.4,0,.2,1); }
-.js-reveal-ready .siblings.is-visible .siblings__list a{ opacity:1; transform:translateY(0); }
-.js-reveal-ready .siblings__list a:nth-child(1){ transition-delay:.18s; }
-.js-reveal-ready .siblings__list a:nth-child(2){ transition-delay:.28s; }
-.js-reveal-ready .siblings__list a:nth-child(3){ transition-delay:.38s; }
+
+.sitemap{
+  max-width:900px; margin: 2rem auto 0; padding: 2.6rem 1.75rem 7rem;
+  border-top:1px solid var(--hair);
+}
+.sitemap__title{
+  font-family:'Fraunces', serif; font-style:italic; font-weight:400;
+  color:var(--graphite); font-size:1.08rem; margin:0 0 2.2rem;
+}
+.sitemap__grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(190px,1fr)); gap:2.4rem 2rem; }
+.sitemap__group-label{ display:flex; align-items:baseline; gap:.5rem; margin:0 0 1rem; }
+.sitemap__num{ font-family:'Fraunces', serif; font-style:italic; color:var(--mist); font-size:.85rem; }
+.sitemap__name{ font-family:'Fraunces', serif; font-size:1.02rem; color:var(--charcoal); }
+.sitemap__list{ display:flex; flex-direction:column; gap:.6rem; }
+.sitemap__list a{
+  font-size:.94rem; color:var(--graphite); text-decoration:none;
+  border-bottom:1px solid transparent; width:max-content;
+  transition:border-color .25s cubic-bezier(.4,0,.2,1), color .25s ease, transform .25s cubic-bezier(.4,0,.2,1);
+}
+.sitemap__list a:hover{ color:var(--ink); border-bottom-color:var(--ink); transform:translateX(4px); }
+.sitemap__list a[aria-current="page"]{ color:var(--ink); font-weight:600; border-bottom-color:var(--ink); pointer-events:none; }
+
+.js-reveal-ready .sitemap{ opacity:0; transform:translateY(26px); transition: opacity .8s cubic-bezier(.19,.82,.28,1), transform .8s cubic-bezier(.19,.82,.28,1); }
+.js-reveal-ready .sitemap.is-visible{ opacity:1; transform:translateY(0); }
+
+@media (max-width:640px){
+  .sitemap{ padding:2.2rem 1.25rem 5.5rem; border-top-width:2px; }
+  .sitemap__title{ font-size:1.15rem; }
+  .sitemap__grid{ grid-template-columns:1fr; gap:2rem; }
+  .sitemap__list a{ font-size:1rem; padding:.15rem 0; }
+}
 
 /* ---------- SCROLL REVEAL (Intersection Observer) ----------
    Progressive enhancement : sans JS ou avec "reduced motion", le
@@ -371,77 +382,26 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 .footer__note{ font-size:0.77rem; color:rgba(255,255,255,0.38); max-width:320px; line-height:1.6; }
 
 @media (max-width:1024px){
+  .menu__home{ border-right:none; }
   .footer__inner{ flex-direction:column; }
   .photo-header--page{ height:300px; }
   .photo-header__content{ padding:2.2rem 1.5rem; }
   .photo-header--home .photo-header__content{ padding-bottom:5rem; }
   .photo-header--page .photo-header__content{ padding-bottom:3rem; }
   main{ padding:8rem 1.25rem 1.5rem; }
-  .siblings{ padding:0 1.25rem 6rem; }
+  .sitemap{ padding:2.2rem 1.25rem 6rem; }
   .home-intro{ padding:4.5rem 1.4rem 5.5rem; }
   .footer__inner{ padding:5rem 1.25rem 4rem; }
 
-  /* ---------- Menu mobile / tablette ----------
-     Repose sur <details>/<summary>, un élément natif du navigateur :
-     ouverture/fermeture gérées directement par le navigateur, sans
-     JavaScript, donc ça ne peut pas rester bloqué ou s'afficher vide. */
-  .menu__row{ flex-wrap:nowrap; align-items:center; }
+  /* Sur mobile et tablette, le menu déroulant du haut disparaît entièrement :
+     seul le nom (retour à l'accueil) reste. La navigation se fait via le
+     plan du site complet, affiché en bas de chaque page (voir .sitemap). */
   .menu__item{ display:none; }
-
-  .mobile-drawer{ display:block; margin-left:auto; position:relative; }
-  .mobile-drawer__summary{
-    display:flex; align-items:center; gap:.5rem;
-    list-style:none; cursor:pointer; user-select:none;
-    padding:1.05rem .9rem;
-    font-family:'Work Sans', sans-serif; font-size:.85rem; font-weight:500;
-    letter-spacing:.02em; color:var(--ink);
-  }
-  .mobile-drawer__summary::-webkit-details-marker{ display:none; }
-  .mobile-drawer__summary::marker{ content:''; }
-
-  .mobile-drawer__icon{
-    display:inline-flex; flex-direction:column; justify-content:space-between;
-    width:16px; height:12px; flex-shrink:0;
-  }
-  .mobile-drawer__icon i{
-    display:block; width:100%; height:1.5px; background:currentColor; border-radius:1px;
-    transition:transform .25s cubic-bezier(.4,0,.2,1), opacity .15s ease;
-    transform-origin:center;
-  }
-  .mobile-drawer[open] .mobile-drawer__icon i:nth-child(1){ transform:translateY(5.25px) rotate(45deg); }
-  .mobile-drawer[open] .mobile-drawer__icon i:nth-child(2){ opacity:0; }
-  .mobile-drawer[open] .mobile-drawer__icon i:nth-child(3){ transform:translateY(-5.25px) rotate(-45deg); }
-
-  .mobile-drawer__panel{
-    position:absolute; top:100%; right:0;
-    width:min(320px, 88vw); max-height:min(70vh, 480px); overflow-y:auto;
-    background:var(--ink); padding:.6rem 0;
-    box-shadow:0 22px 44px -14px rgba(10,10,10,0.4);
-    z-index:120;
-  }
-  .mobile-drawer__group{ padding:.5rem 0; }
-  .mobile-drawer__group + .mobile-drawer__group{ border-top:1px solid rgba(255,255,255,0.1); }
-  .mobile-drawer__label{
-    display:flex; align-items:center; gap:.55rem;
-    padding:.5rem 1.3rem .2rem; font-size:.7rem; font-weight:700;
-    text-transform:uppercase; letter-spacing:.06em; color:#9FB4BB;
-  }
-  .mobile-drawer__panel a{
-    display:block; padding:.6rem 1.3rem; color:#DCDAD4; text-decoration:none; font-size:.92rem;
-  }
-  .mobile-drawer__panel a:hover, .mobile-drawer__panel a[aria-current="page"]{
-    background:rgba(255,255,255,0.06); color:#fff;
-  }
 }
-
-@media (min-width:1025px){
-  .mobile-drawer{ display:none; }
-}
-
 
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior:auto; }
-  .menu__caret, .menu__panel, .hero__eyebrow, .hero__name, .hero__title, .hero__loc, .breadcrumb, .banner__title, .photo-header__img-inner, .page, .group__head, .block, .siblings, .home-intro, .home-intro__rule, .menu__home, .menu__item, .order-badge{ transition:none; animation:none; }
+  .menu__caret, .menu__panel, .hero__eyebrow, .hero__name, .hero__title, .hero__loc, .breadcrumb, .banner__title, .photo-header__img-inner, .page, .group__head, .block, .sitemap, .home-intro, .home-intro__rule, .menu__home, .order-badge{ transition:none; animation:none; }
   .photo-header__img{ transform:none !important; }
   .photo-header__img-inner{ transform:none !important; }
 }
@@ -505,47 +465,57 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <div class="home-intro reveal">
       <hr class="home-intro__rule">
       <p class="home-intro__lede">Une présentation pensée pour être lue avant notre premier échange.</p>
       <p class="home-intro__body">Ce site rassemble, en un seul endroit, tout ce qu'il est utile de savoir avant de me confier votre comptabilité : mon parcours et mes diplômes, la façon dont je conçois ce métier, l'accompagnement que je propose au quotidien, les outils que j'utilise pour suivre vos chiffres, et le cadre déontologique dans lequel je travaille. Prenez le temps de parcourir les rubriques du menu ci-dessus. Chacune se lit en quelques instants, et vous saurez exactement à qui vous avez affaire avant même notre premier rendez-vous.</p>
+    </div>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
   <section class="page" id="histoire">
@@ -600,41 +570,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -648,13 +583,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>J'ai grandi avec l'idée qu'un chiffre, seul, ne raconte rien : c'est la façon dont on l'explique à un dirigeant qui lui donne du sens. C'est cette conviction qui m'a mené vers l'expertise comptable, puis vers l'exercice indépendant, où je peux suivre chaque dossier dans la durée plutôt que de le confier à une chaîne de production.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Mon CV »</p>
-      <div class="siblings__list">
-        <a href="#histoire" data-target="histoire" aria-current="page">Mon histoire</a>
-        <a href="#parcours" data-target="parcours">Mon parcours</a>
-        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire" aria-current="page">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -710,41 +681,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -758,13 +694,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>Avant de m'installer à mon compte à Spay, j'ai construit mon expérience en cabinet, au contact de dirigeants de TPE et de PME de secteurs variés (artisanat, commerce, professions libérales). Ce passage m'a appris à adapter mon discours à chaque réalité d'entreprise plutôt qu'à appliquer une méthode unique.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Mon CV »</p>
-      <div class="siblings__list">
-        <a href="#histoire" data-target="histoire">Mon histoire</a>
-        <a href="#parcours" data-target="parcours" aria-current="page">Mon parcours</a>
-        <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours" aria-current="page">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -820,41 +792,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -868,13 +805,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>Diplômé d'expertise comptable (DEC), inscrit au tableau de l'Ordre des experts-comptables des Pays de la Loire. Ce diplôme s'accompagne d'une obligation de formation continue que je prends au sérieux, notamment sur les évolutions fiscales et les outils numériques du métier.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Mon CV »</p>
-      <div class="siblings__list">
-        <a href="#histoire" data-target="histoire">Mon histoire</a>
-        <a href="#parcours" data-target="parcours">Mon parcours</a>
-        <a href="#diplomes" data-target="diplomes" aria-current="page">Mes diplômes</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes" aria-current="page">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -930,41 +903,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -978,13 +916,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>Je préfère prévenir un problème que le corriger. Cela suppose des échanges réguliers avec mes clients, pas seulement au moment du bilan, et une disponibilité réelle : un expert-comptable qu'on ne joint jamais ne sert pas à grand-chose.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Ma Vision »</p>
-      <div class="siblings__list">
-        <a href="#philosophie" data-target="philosophie" aria-current="page">Ma philosophie de travail</a>
-        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-        <a href="#logo" data-target="logo">Sens de mon logo</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie" aria-current="page">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1040,41 +1014,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -1088,13 +1027,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>Indépendant par choix, je limite volontairement le nombre de dossiers que je suis pour garder une relation directe avec chaque dirigeant. Pas d'interlocuteur qui change tous les six mois, pas de dossier traité par un assistant que je n'ai jamais rencontré.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Ma Vision »</p>
-      <div class="siblings__list">
-        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-        <a href="#positionnement" data-target="positionnement" aria-current="page">Mon positionnement</a>
-        <a href="#logo" data-target="logo">Sens de mon logo</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement" aria-current="page">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1150,41 +1125,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -1198,13 +1138,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>« CAUTE PROGREDIOR » — j'avance avec prudence. Cette devise, portée par l'Ordre, résume assez bien ma façon de conseiller : avancer, mais toujours après avoir vérifié le terrain.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Ma Vision »</p>
-      <div class="siblings__list">
-        <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-        <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-        <a href="#logo" data-target="logo" aria-current="page">Sens de mon logo</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo" aria-current="page">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1260,41 +1236,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -1308,13 +1249,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>Choix de la structure, rédaction des statuts, formalités d'immatriculation, premiers choix fiscaux et sociaux : je vous accompagne dès les premières décisions, celles qui sont ensuite coûteuses à corriger.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Mon accompagnement »</p>
-      <div class="siblings__list">
-        <a href="#creation" data-target="creation" aria-current="page">Création d'entreprises & juridique</a>
-        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation" aria-current="page">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1370,41 +1347,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -1418,13 +1360,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>Tenue ou supervision de la comptabilité, établissement des comptes annuels, liasses fiscales et déclarations courantes, avec un point d'étape régulier pour anticiper l'impôt plutôt que le découvrir en fin d'exercice.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Mon accompagnement »</p>
-      <div class="siblings__list">
-        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-        <a href="#compta-fiscal" data-target="compta-fiscal" aria-current="page">Comptabilité & Fiscalité</a>
-        <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal" aria-current="page">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1480,41 +1458,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -1528,13 +1471,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>Tableaux de bord, suivi de trésorerie, prévisionnels : des outils pensés pour être réellement lus et utilisés, pas pour dormir dans un tiroir jusqu'au bilan suivant.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Mon accompagnement »</p>
-      <div class="siblings__list">
-        <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-        <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-        <a href="#gestion" data-target="gestion" aria-current="page">Gestion & quotidien</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion" aria-current="page">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1590,41 +1569,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -1638,13 +1582,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>Ma plateforme de comptabilité au quotidien : synchronisation bancaire, notes de frais et factures dématérialisées, avec un accès partagé qui vous permet de suivre vos chiffres en temps réel plutôt qu'une fois par trimestre.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Mes outils »</p>
-      <div class="siblings__list">
-        <a href="#pennylane" data-target="pennylane" aria-current="page">Pennylane</a>
-        <a href="#silae" data-target="silae">Silae</a>
-        <a href="#rca" data-target="rca">RCA</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane" aria-current="page">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1700,41 +1680,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -1748,13 +1693,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>Pour la gestion de la paie : bulletins, déclarations sociales nominatives et suivi des obligations liées à l'emploi de vos salariés, en lien avec votre comptabilité générale.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Mes outils »</p>
-      <div class="siblings__list">
-        <a href="#pennylane" data-target="pennylane">Pennylane</a>
-        <a href="#silae" data-target="silae" aria-current="page">Silae</a>
-        <a href="#rca" data-target="rca">RCA</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae" aria-current="page">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1810,41 +1791,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -1858,13 +1804,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>Mon outil de revue et de contrôle des comptes, utilisé en amont de chaque arrêté pour sécuriser la qualité des chiffres avant qu'ils ne vous soient présentés.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Mes outils »</p>
-      <div class="siblings__list">
-        <a href="#pennylane" data-target="pennylane">Pennylane</a>
-        <a href="#silae" data-target="silae">Silae</a>
-        <a href="#rca" data-target="rca" aria-current="page">RCA</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca" aria-current="page">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1920,41 +1902,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -1968,13 +1915,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>La profession d'expert-comptable est encadrée par un code de déontologie et des normes professionnelles : secret professionnel, indépendance, compétence. Elles structurent la façon dont chaque dossier est tenu et contrôlé.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Mes process »</p>
-      <div class="siblings__list">
-        <a href="#normes" data-target="normes" aria-current="page">Les normes de notre profession</a>
-        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-        <a href="#process" data-target="process">Mes process</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes" aria-current="page">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -2030,41 +2013,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -2078,13 +2026,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>En prêtant serment devant la Cour d'appel, je me suis engagé à exercer ma profession avec conscience et probité. C'est un engagement que je garde en tête à chaque dossier, y compris quand la réponse la plus simple n'est pas la bonne.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Mes process »</p>
-      <div class="siblings__list">
-        <a href="#normes" data-target="normes">Les normes de notre profession</a>
-        <a href="#serment" data-target="serment" aria-current="page">Le serment de l'expert-comptable</a>
-        <a href="#process" data-target="process">Mes process</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment" aria-current="page">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -2140,41 +2124,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
-    <details class="mobile-drawer">
-      <summary class="mobile-drawer__summary"><span class="mobile-drawer__icon"><i></i><i></i><i></i></span> Menu</summary>
-      <div class="mobile-drawer__panel">
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon CV</p>
-          <a href="#histoire" data-target="histoire">Mon histoire</a>
-          <a href="#parcours" data-target="parcours">Mon parcours</a>
-          <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Ma Vision</p>
-          <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
-          <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
-          <a href="#logo" data-target="logo">Sens de mon logo</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mon accompagnement</p>
-          <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
-          <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
-          <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes outils</p>
-          <a href="#pennylane" data-target="pennylane">Pennylane</a>
-          <a href="#silae" data-target="silae">Silae</a>
-          <a href="#rca" data-target="rca">RCA</a>
-        </div>
-        <div class="mobile-drawer__group">
-          <p class="mobile-drawer__label">Mes process</p>
-          <a href="#normes" data-target="normes">Les normes de notre profession</a>
-          <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-          <a href="#process" data-target="process">Mes process</a>
-        </div>
-      </div>
-    </details>
   </div>
 </nav>
     <main>
@@ -2188,13 +2137,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <p>Un point de contact unique, un calendrier partagé des échéances, et une revue des comptes avant chaque échéance déclarative : des habitudes simples, mais tenues systématiquement.</p>
       </div>
     </main>
-    <div class="siblings reveal">
-      <hr class="siblings__rule">
-      <p class="siblings__label">Dans « Mes process »</p>
-      <div class="siblings__list">
-        <a href="#normes" data-target="normes">Les normes de notre profession</a>
-        <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
-        <a href="#process" data-target="process" aria-current="page">Mes process</a>
+    <div class="sitemap reveal">
+      <p class="sitemap__title">Toutes les pages du site</p>
+      <div class="sitemap__grid">
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
+          <div class="sitemap__list">
+            <a href="#histoire" data-target="histoire">Mon histoire</a>
+            <a href="#parcours" data-target="parcours">Mon parcours</a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">II.</span><span class="sitemap__name">Ma Vision</span></p>
+          <div class="sitemap__list">
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail</a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement</a>
+            <a href="#logo" data-target="logo">Sens de mon logo</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">III.</span><span class="sitemap__name">Mon accompagnement</span></p>
+          <div class="sitemap__list">
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique</a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité</a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">IV.</span><span class="sitemap__name">Mes outils</span></p>
+          <div class="sitemap__list">
+            <a href="#pennylane" data-target="pennylane">Pennylane</a>
+            <a href="#silae" data-target="silae">Silae</a>
+            <a href="#rca" data-target="rca">RCA</a>
+          </div>
+        </div>
+        <div class="sitemap__group">
+          <p class="sitemap__group-label"><span class="sitemap__num">V.</span><span class="sitemap__name">Mes process</span></p>
+          <div class="sitemap__list">
+            <a href="#normes" data-target="normes">Les normes de notre profession</a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
+            <a href="#process" data-target="process" aria-current="page">Mes process</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -2264,12 +2249,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
     window.setTimeout(function(){ veil.classList.remove('sweep'); }, 700);
   }
 
-  function closeMobileDrawer(){
-    document.querySelectorAll('details.mobile-drawer[open]').forEach(function(d){
-      d.removeAttribute('open');
-    });
-  }
-
   document.addEventListener('click', function(e){
     var link = e.target.closest('[data-target]');
     if(link){
@@ -2281,7 +2260,6 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         o.classList.remove('open');
         o.querySelector('.menu__trigger').setAttribute('aria-expanded','false');
       });
-      closeMobileDrawer();
       return;
     }
     var trigger = e.target.closest('.menu__trigger');
