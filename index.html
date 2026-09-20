@@ -9,10 +9,22 @@
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
 <meta name="googlebot" content="noindex, nofollow">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+@font-face{
+  font-family:'Fraunces';
+  src:url('fraunces.woff2') format('woff2');
+  font-weight:400 900; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:'Fraunces';
+  src:url('fraunces-italic.woff2') format('woff2');
+  font-weight:400 900; font-style:italic; font-display:swap;
+}
+@font-face{
+  font-family:'Work Sans';
+  src:url('work-sans.woff2') format('woff2');
+  font-weight:100 900; font-style:normal; font-display:swap;
+}
 
 :root{
   --paper:#F4F3EF;
@@ -380,6 +392,8 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 .footer__meta a{ color:#fff; text-decoration:underline; text-underline-offset:2px; transition:opacity .2s ease; }
 .footer__meta a:hover{ opacity:.7; }
 .footer__note{ font-size:0.77rem; color:rgba(255,255,255,0.38); max-width:320px; line-height:1.6; }
+.footer__legal{ font-size:0.76rem; color:rgba(255,255,255,0.55); max-width:640px; line-height:1.7; margin-top:1.4rem; padding-top:1.4rem; border-top:1px solid rgba(255,255,255,0.12); }
+.footer__legal a{ color:rgba(255,255,255,0.75); text-decoration:underline; }
 
 @media (max-width:1024px){
   .menu__home{ border-right:none; }
@@ -473,7 +487,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
       <p class="home-intro__body">Ce site rassemble, en un seul endroit, tout ce qu'il est utile de savoir avant de me confier votre comptabilité : mon parcours et mes diplômes, la façon dont je conçois ce métier, l'accompagnement que je propose au quotidien, les outils que j'utilise pour suivre vos chiffres, et le cadre déontologique dans lequel je travaille. Prenez le temps de parcourir les rubriques du menu ci-dessus. Chacune se lit en quelques instants, et vous saurez exactement à qui vous avez affaire avant même notre premier rendez-vous.</p>
     </div>
     <div class="sitemap reveal">
-      <p class="sitemap__title"></p>
+      <p class="sitemap__title">Toutes les pages du site</p>
       <div class="sitemap__grid">
         <div class="sitemap__group">
           <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
@@ -584,7 +598,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
       </div>
     </main>
     <div class="sitemap reveal">
-      <p class="sitemap__title"></p>
+      <p class="sitemap__title">Toutes les pages du site</p>
       <div class="sitemap__grid">
         <div class="sitemap__group">
           <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
@@ -695,7 +709,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
       </div>
     </main>
     <div class="sitemap reveal">
-      <p class="sitemap__title"></p>
+      <p class="sitemap__title">Toutes les pages du site</p>
       <div class="sitemap__grid">
         <div class="sitemap__group">
           <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
@@ -806,7 +820,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
       </div>
     </main>
     <div class="sitemap reveal">
-      <p class="sitemap__title"></p>
+      <p class="sitemap__title">Toutes les pages du site</p>
       <div class="sitemap__grid">
         <div class="sitemap__group">
           <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
@@ -917,7 +931,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
       </div>
     </main>
     <div class="sitemap reveal">
-      <p class="sitemap__title"></p>
+      <p class="sitemap__title">Toutes les pages du site</p>
       <div class="sitemap__grid">
         <div class="sitemap__group">
           <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
@@ -1028,7 +1042,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
       </div>
     </main>
     <div class="sitemap reveal">
-      <p class="sitemap__title"></p>
+      <p class="sitemap__title">Toutes les pages du site</p>
       <div class="sitemap__grid">
         <div class="sitemap__group">
           <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
@@ -1139,7 +1153,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
       </div>
     </main>
     <div class="sitemap reveal">
-      <p class="sitemap__title"></p>
+      <p class="sitemap__title">Toutes les pages du site</p>
       <div class="sitemap__grid">
         <div class="sitemap__group">
           <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
@@ -1250,7 +1264,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
       </div>
     </main>
     <div class="sitemap reveal">
-      <p class="sitemap__title"></p>
+      <p class="sitemap__title">Toutes les pages du site</p>
       <div class="sitemap__grid">
         <div class="sitemap__group">
           <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
@@ -1361,7 +1375,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
       </div>
     </main>
     <div class="sitemap reveal">
-      <p class="sitemap__title"></p>
+      <p class="sitemap__title">Toutes les pages du site</p>
       <div class="sitemap__grid">
         <div class="sitemap__group">
           <p class="sitemap__group-label"><span class="sitemap__num">I.</span><span class="sitemap__name">Mon CV</span></p>
@@ -2198,6 +2212,10 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
       </p>
     </div>
     <p class="footer__note reveal">Site non indexé — merci de ne pas le partager publiquement ni de le relayer sur les réseaux.</p>
+    <p class="footer__legal reveal">
+      Directeur de la publication : Jean Lou Nivault, expert-comptable indépendant. Hébergement : GitHub, Inc., 88 Colin P Kelly Jr Street, San Francisco, CA 94107, États-Unis.
+      Ce site ne collecte aucune donnée personnelle de ses visiteurs (pas de cookie, pas d'outil de mesure d'audience, pas de formulaire). Les seules données affichées ci-dessus sont celles de M. Nivault lui-même, communiquées dans un cadre professionnel.
+    </p>
   </div>
 </footer>
 <script>
