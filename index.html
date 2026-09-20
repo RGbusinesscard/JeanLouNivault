@@ -175,13 +175,8 @@ nav.menu{
   border-bottom:1px solid var(--hair);
 }
 .menu__row{ max-width:1180px; margin:0 auto; display:flex; flex-wrap:wrap; }
-.menu__row > *{ animation: navIn .55s cubic-bezier(.19,.82,.28,1) both; }
-.menu__row > *:nth-child(1){ animation-delay:.02s; }
-.menu__row > *:nth-child(2){ animation-delay:.08s; }
-.menu__row > *:nth-child(3){ animation-delay:.14s; }
-.menu__row > *:nth-child(4){ animation-delay:.2s; }
-.menu__row > *:nth-child(5){ animation-delay:.26s; }
-.menu__row > *:nth-child(6){ animation-delay:.32s; }
+.menu__home{ animation: navIn .55s cubic-bezier(.19,.82,.28,1) .02s both; }
+.menu__categories > .menu__item{ animation: navIn .55s cubic-bezier(.19,.82,.28,1) .12s both; }
 @keyframes navIn{ from{ opacity:0; transform:translateY(-9px); } to{ opacity:1; transform:translateY(0); } }
 
 .menu__home{
@@ -241,7 +236,7 @@ nav.menu{
 .order-badge{
   position:fixed;
   top:1.1rem; right:1.1rem;
-  z-index:60;
+  z-index:500;
   width:78px;
   aspect-ratio: 480 / 257;
   filter:drop-shadow(0 3px 10px rgba(0,0,0,0.35));
@@ -252,6 +247,29 @@ nav.menu{
 .order-badge:hover{ transform:scale(1.04); }
 @media (max-width:640px){
   .order-badge{ top:0.7rem; right:0.7rem; width:56px; }
+}
+
+/* ---------- Barre de progression de lecture ---------- */
+.progress-bar{
+  position:fixed; top:0; left:0; height:3px; width:0%;
+  background:var(--ink); z-index:300;
+  transition:width .12s linear;
+}
+
+/* ---------- Rideau de transition entre les pages ---------- */
+.page-veil{
+  position:fixed; inset:0; z-index:400; background:var(--ink);
+  transform:scaleX(0); transform-origin:left; pointer-events:none;
+}
+.page-veil.sweep{ animation: veilSweep .68s cubic-bezier(.76,0,.24,1) both; }
+@keyframes veilSweep{
+  0%{ transform:scaleX(0); transform-origin:left; }
+  48%{ transform:scaleX(1); transform-origin:left; }
+  52%{ transform:scaleX(1); transform-origin:right; }
+  100%{ transform:scaleX(0); transform-origin:right; }
+}
+@media (prefers-reduced-motion: reduce){
+  .page-veil.sweep{ animation:none; display:none; }
 }
 
 /* ---------- CONTENT ---------- */
@@ -352,10 +370,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 .footer__meta a:hover{ opacity:.7; }
 .footer__note{ font-size:0.77rem; color:rgba(255,255,255,0.38); max-width:320px; line-height:1.6; }
 
-@media (max-width:640px){
+@media (max-width:1024px){
   .menu__item{ border-right:none; border-bottom:1px solid var(--hair); width:100%; }
-  .menu__row{ flex-direction:column; }
-  .menu__home{ border-right:none; border-bottom:1px solid var(--hair); }
+  .menu__home{ border-right:none; }
   .menu__panel{ position:static; box-shadow:none; }
   .footer__inner{ flex-direction:column; }
   .photo-header--page{ height:300px; }
@@ -366,11 +383,53 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
   .siblings{ padding:0 1.25rem 6rem; }
   .home-intro{ padding:4.5rem 1.4rem 5.5rem; }
   .footer__inner{ padding:5rem 1.25rem 4rem; }
+
+  /* ---------- Menu mobile / tablette : un seul bouton discret, un seul panneau ---------- */
+  .menu__row{ flex-wrap:nowrap; align-items:center; }
+  .menu__mobile-toggle{
+    display:inline-flex; align-items:center; gap:.4rem; margin-left:auto;
+    background:none; border:none; padding:.6rem .2rem;
+    font-family:'Work Sans', sans-serif; font-size:.85rem; font-weight:500;
+    letter-spacing:.02em; color:var(--ink); cursor:pointer;
+  }
+  .menu__mobile-toggle .menu__mobile-icon{
+    display:inline-flex; flex-direction:column; justify-content:space-between;
+    width:16px; height:12px;
+  }
+  .menu__mobile-icon i{
+    display:block; width:100%; height:1.5px; background:currentColor; border-radius:1px;
+    transition:transform .28s cubic-bezier(.4,0,.2,1), opacity .18s ease;
+    transform-origin:center;
+  }
+  .menu__mobile-toggle[aria-expanded="true"] .menu__mobile-icon i:nth-child(1){ transform:translateY(5.25px) rotate(45deg); }
+  .menu__mobile-toggle[aria-expanded="true"] .menu__mobile-icon i:nth-child(2){ opacity:0; }
+  .menu__mobile-toggle[aria-expanded="true"] .menu__mobile-icon i:nth-child(3){ transform:translateY(-5.25px) rotate(-45deg); }
+
+  .menu__categories{
+    display:none;
+    position:fixed; inset:0; z-index:250; background:var(--paper);
+    flex-direction:column; overflow-y:auto; padding: 4.5rem 0 3rem;
+  }
+  nav.menu.mobile-open{ position:fixed; z-index:250; }
+  nav.menu.mobile-open .menu__categories{ display:flex; }
+  .menu__mobile-close{
+    position:absolute; top:1.3rem; left:1.4rem;
+    display:flex; align-items:center; justify-content:center;
+    width:34px; height:34px; border-radius:50%;
+    background:none; border:1px solid var(--hair-strong);
+    font-size:1rem; color:var(--ink); cursor:pointer; line-height:1;
+  }
+  body.mobile-menu-open{ overflow:hidden; }
+}
+
+@media (min-width:1025px){
+  .menu__mobile-toggle, .menu__mobile-close{ display:none; }
+  .menu__categories{ display:contents; }
 }
 
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior:auto; }
-  .menu__caret, .menu__panel, .hero__eyebrow, .hero__name, .hero__title, .hero__loc, .breadcrumb, .banner__title, .photo-header__img-inner, .page, .group__head, .block, .siblings, .home-intro, .home-intro__rule, .menu__row > *, .order-badge{ transition:none; animation:none; }
+  .menu__caret, .menu__panel, .hero__eyebrow, .hero__name, .hero__title, .hero__loc, .breadcrumb, .banner__title, .photo-header__img-inner, .page, .group__head, .block, .siblings, .home-intro, .home-intro__rule, .menu__home, .menu__categories > .menu__item, .order-badge{ transition:none; animation:none; }
   .photo-header__img{ transform:none !important; }
   .photo-header__img-inner{ transform:none !important; }
 }
@@ -378,7 +437,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 </style>
 </head>
 <body>
-<div class="order-badge ordre-bg" role="img" aria-label="Ordre des experts-comptables" data-target="home" style="cursor:pointer;"></div>
+<div class="progress-bar" id="progressBar"></div><div class="page-veil" id="pageVeil"></div><div class="order-badge ordre-bg" role="img" aria-label="Ordre des experts-comptables" data-target="home" style="cursor:pointer;"></div>
 <div id="app">
   <section class="page active" id="home">
     <header class="photo-header photo-header--home">
@@ -394,6 +453,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -433,6 +495,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -454,6 +517,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -493,6 +559,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -529,6 +596,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -568,6 +638,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -604,6 +675,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -643,6 +717,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -679,6 +754,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -718,6 +796,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -754,6 +833,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -793,6 +875,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -829,6 +912,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -868,6 +954,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -904,6 +991,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -943,6 +1033,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -979,6 +1070,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -1018,6 +1112,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -1054,6 +1149,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -1093,6 +1191,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -1129,6 +1228,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -1168,6 +1270,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -1204,6 +1307,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -1243,6 +1349,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -1279,6 +1386,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -1318,6 +1428,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -1354,6 +1465,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -1393,6 +1507,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -1429,6 +1544,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -1468,6 +1586,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -1504,6 +1623,9 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
 <nav class="menu" aria-label="Navigation principale">
   <div class="menu__row">
     <a class="menu__home" href="#home" data-target="home">Jean Lou Nivault</a>
+    <button class="menu__mobile-toggle" type="button" aria-expanded="false" aria-label="Ouvrir le menu"><span class="menu__mobile-icon"><i></i><i></i><i></i></span> Menu</button>
+    <div class="menu__categories">
+      <button class="menu__mobile-close" type="button" aria-label="Fermer le menu">×</button>
     <div class="menu__item">
       <button class="menu__trigger" aria-expanded="false">Mon CV <span class="menu__caret"></span></button>
       <div class="menu__panel">
@@ -1543,6 +1665,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
       </div>
+    </div>
     </div>
   </div>
 </nav>
@@ -1596,7 +1719,16 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
     img.style.transform = 'translateY(' + offset + 'px)';
   }
 
-  function showPage(id){
+  function updateProgress(){
+    var bar = document.getElementById('progressBar');
+    var activePage = document.querySelector('.page.active');
+    if(!bar || !activePage) return;
+    var docHeight = activePage.scrollHeight - window.innerHeight;
+    var pct = docHeight > 0 ? Math.max(0, Math.min(100, (window.scrollY / docHeight) * 100)) : 0;
+    bar.style.width = pct + '%';
+  }
+
+  function performPageSwap(id){
     if(pageIds.indexOf(id) === -1){ id = 'home'; }
     document.querySelectorAll('.page').forEach(function(p){
       p.classList.toggle('active', p.id === id);
@@ -1607,9 +1739,49 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
     });
     window.scrollTo(0,0);
     updateParallax();
+    updateProgress();
+  }
+
+  function showPage(id){
+    var veil = document.getElementById('pageVeil');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!veil || reduceMotion){
+      performPageSwap(id);
+      return;
+    }
+    veil.classList.remove('sweep');
+    void veil.offsetWidth;
+    veil.classList.add('sweep');
+    window.setTimeout(function(){ performPageSwap(id); }, 300);
+    window.setTimeout(function(){ veil.classList.remove('sweep'); }, 700);
+  }
+
+  function closeMobileMenu(){
+    document.querySelectorAll('nav.menu.mobile-open').forEach(function(navEl){
+      navEl.classList.remove('mobile-open');
+      var t = navEl.querySelector('.menu__mobile-toggle');
+      if(t){ t.setAttribute('aria-expanded','false'); }
+    });
+    document.body.classList.remove('mobile-menu-open');
   }
 
   document.addEventListener('click', function(e){
+    var mobileToggle = e.target.closest('.menu__mobile-toggle');
+    if(mobileToggle){
+      var navEl = mobileToggle.closest('nav.menu');
+      var isOpen = navEl.classList.contains('mobile-open');
+      if(isOpen){ closeMobileMenu(); }
+      else{
+        navEl.classList.add('mobile-open');
+        mobileToggle.setAttribute('aria-expanded','true');
+        document.body.classList.add('mobile-menu-open');
+      }
+      return;
+    }
+    if(e.target.closest('.menu__mobile-close')){
+      closeMobileMenu();
+      return;
+    }
     var link = e.target.closest('[data-target]');
     if(link){
       e.preventDefault();
@@ -1620,6 +1792,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         o.classList.remove('open');
         o.querySelector('.menu__trigger').setAttribute('aria-expanded','false');
       });
+      closeMobileMenu();
       return;
     }
     var trigger = e.target.closest('.menu__trigger');
@@ -1651,11 +1824,11 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
   var ticking = false;
   window.addEventListener('scroll', function(){
     if(!ticking){
-      window.requestAnimationFrame(function(){ updateParallax(); ticking = false; });
+      window.requestAnimationFrame(function(){ updateParallax(); updateProgress(); ticking = false; });
       ticking = true;
     }
   }, {passive:true});
-  window.addEventListener('resize', updateParallax);
+  window.addEventListener('resize', function(){ updateParallax(); updateProgress(); });
 
   (function initScrollReveal(){
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1674,7 +1847,7 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
     els.forEach(function(el){ io.observe(el); });
   })();
 
-  showPage(location.hash.replace('#','') || 'home');
+  performPageSwap(location.hash.replace('#','') || 'home');
 </script>
 </body>
 </html>
