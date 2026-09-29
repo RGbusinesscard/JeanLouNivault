@@ -38,7 +38,7 @@
 }
 
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%;}
 
 body{
   margin:0;
@@ -75,7 +75,7 @@ a{ color:inherit; }
 
 /* ---------- PAGE ROUTING (fondu doux à l'arrivée sur une page) ---------- */
 .page{ display:none; }
-.page.active{ display:block; animation: pageIn .55s cubic-bezier(.19,.82,.28,1) both; }
+.page.active{ display:block; animation: pageIn .55s cubic-bezier(.19,.82,.28,1) backwards; }
 @keyframes pageIn{
   from{ opacity:0; transform:translateY(10px); }
   to{ opacity:1; transform:translateY(0); }
@@ -88,7 +88,7 @@ a{ color:inherit; }
   display:flex;
   align-items:flex-end;
 }
-.photo-header--home{ min-height:88vh; }
+.photo-header--home{ min-height:88vh; min-height:88svh; }
 .photo-header--page{ height:380px; }
 
 /* Wrapper : ne porte QUE le parallax (JS, propriété transform). */
@@ -187,8 +187,8 @@ nav.menu{
   border-bottom:1px solid var(--hair);
 }
 .menu__row{ max-width:1180px; margin:0 auto; display:flex; flex-wrap:wrap; }
-.menu__home{ animation: navIn .55s cubic-bezier(.19,.82,.28,1) .02s both; }
-.menu__categories > .menu__item{ animation: navIn .55s cubic-bezier(.19,.82,.28,1) .12s both; }
+.menu__home{ animation: navIn .55s cubic-bezier(.19,.82,.28,1) .02s backwards; }
+.menu__item{ animation: navIn .55s cubic-bezier(.19,.82,.28,1) .12s backwards; }
 @keyframes navIn{ from{ opacity:0; transform:translateY(-9px); } to{ opacity:1; transform:translateY(0); } }
 
 .menu__home{
@@ -201,7 +201,7 @@ nav.menu{
   color:var(--ink);
   transition:opacity .25s ease;
 }
-.menu__home:hover{ opacity:.6; }
+@media (hover:hover){ .menu__home:hover{ opacity:.6; } }
 
 .menu__item{ position:relative; border-right:1px solid var(--hair); }
 
@@ -244,6 +244,90 @@ nav.menu{
   border-left-color:#fff; background:rgba(255,255,255,0.05); color:#fff;
 }
 
+/* ---------- NAVIGATION MOBILE / TABLETTE ----------
+   Bouton burger + panneau qui se déroule sous la barre, sur toute la largeur.
+   Le panneau est en position absolue DANS la barre (collante) : il reste donc
+   toujours accroché sous le menu, sans position:fixed (qui cassait l'ancien
+   panneau à l'intérieur des pages animées). Masqué par défaut, activé <1024px. */
+.menu__burger, .menu__drawer{ display:none; }
+
+.menu__burger{
+  appearance:none; cursor:pointer;
+  align-items:center; gap:.6rem;
+  min-height:40px; padding:.5rem 1rem .5rem .85rem;
+  background:transparent; color:var(--ink);
+  border:1px solid var(--hair-strong); border-radius:999px;
+  font-family:'Work Sans', sans-serif; font-size:.84rem; font-weight:500; letter-spacing:.03em;
+  transition:background-color .25s ease, color .25s ease, border-color .25s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.menu__burger-icon{ display:inline-flex; flex-direction:column; justify-content:space-between; width:16px; height:11px; }
+.menu__burger-icon i{
+  display:block; height:1.5px; width:100%; background:currentColor; border-radius:1px;
+  transition:transform .3s cubic-bezier(.4,0,.2,1), opacity .2s ease;
+}
+.menu__burger-label--close{ display:none; }
+nav.menu.is-open .menu__burger{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+nav.menu.is-open .menu__burger-icon i:nth-child(1){ transform:translateY(4.75px) rotate(45deg); }
+nav.menu.is-open .menu__burger-icon i:nth-child(2){ opacity:0; }
+nav.menu.is-open .menu__burger-icon i:nth-child(3){ transform:translateY(-4.75px) rotate(-45deg); }
+nav.menu.is-open .menu__burger-label--open{ display:none; }
+nav.menu.is-open .menu__burger-label--close{ display:inline; }
+
+.menu__drawer{
+  position:absolute; top:100%; left:0; right:0;
+  max-height:calc(100vh - 60px); max-height:calc(100dvh - 60px);
+  overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
+  background:var(--paper);
+  border-top:1px solid var(--hair);
+  box-shadow:0 26px 40px -22px rgba(10,10,10,0.35);
+  opacity:0; visibility:hidden; transform:translateY(-8px);
+  transition:opacity .28s cubic-bezier(.4,0,.2,1), transform .28s cubic-bezier(.4,0,.2,1), visibility 0s linear .28s;
+}
+nav.menu.is-open .menu__drawer{
+  opacity:1; visibility:visible; transform:translateY(0);
+  transition:opacity .28s cubic-bezier(.4,0,.2,1), transform .28s cubic-bezier(.4,0,.2,1), visibility 0s linear 0s;
+}
+.menu__drawer-inner{ max-width:760px; margin:0 auto; padding:1.2rem 1.5rem 2.4rem; }
+
+.menu__drawer-home{
+  display:flex; align-items:center; justify-content:space-between;
+  min-height:52px; padding:0 .2rem;
+  font-family:'Fraunces', serif; font-style:italic; font-size:1.12rem;
+  color:var(--ink); text-decoration:none;
+  border-bottom:1px solid var(--hair);
+}
+.menu__drawer-grid{ display:grid; grid-template-columns:1fr; gap:.4rem 2.2rem; margin-top:.6rem; }
+.menu__drawer-group{ padding:1.1rem 0 .4rem; }
+.menu__drawer-label{ display:flex; align-items:baseline; gap:.55rem; margin:0 0 .35rem; padding:0 .2rem; }
+.menu__drawer-num{ font-family:'Fraunces', serif; font-style:italic; font-size:.85rem; color:var(--mist); }
+.menu__drawer-name{ font-family:'Fraunces', serif; font-size:1.12rem; color:var(--charcoal); }
+.menu__drawer-group a{
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  min-height:48px; padding:.55rem .2rem .55rem .9rem;
+  font-size:.97rem; color:var(--graphite); text-decoration:none;
+  border-left:2px solid transparent;
+  border-bottom:1px solid var(--hair);
+  transition:color .2s ease, border-color .2s ease, background-color .2s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.menu__drawer-group a:active{ background:var(--paper-dim); }
+.menu__drawer-arrow{ flex-shrink:0; font-size:.9rem; color:var(--mist); transition:transform .25s cubic-bezier(.4,0,.2,1); }
+.menu__drawer-group a[aria-current="page"], .menu__drawer-home[aria-current="page"]{ color:var(--ink); font-weight:600; border-left-color:var(--ink); }
+@media (hover:hover){
+  .menu__drawer-group a:hover{ color:var(--ink); }
+  .menu__drawer-group a:hover .menu__drawer-arrow{ transform:translateX(3px); color:var(--ink); }
+}
+
+/* Apparition en cascade des rubriques à l'ouverture */
+nav.menu .menu__drawer-group{ opacity:0; transform:translateY(8px); transition:opacity .35s ease, transform .35s cubic-bezier(.4,0,.2,1); }
+nav.menu.is-open .menu__drawer-group{ opacity:1; transform:translateY(0); }
+nav.menu.is-open .menu__drawer-group:nth-child(1){ transition-delay:.04s; }
+nav.menu.is-open .menu__drawer-group:nth-child(2){ transition-delay:.08s; }
+nav.menu.is-open .menu__drawer-group:nth-child(3){ transition-delay:.12s; }
+nav.menu.is-open .menu__drawer-group:nth-child(4){ transition-delay:.16s; }
+nav.menu.is-open .menu__drawer-group:nth-child(5){ transition-delay:.20s; }
+
 /* ---------- Badge de l'Ordre — fixe, toujours au même endroit ---------- */
 .order-badge{
   position:fixed;
@@ -256,10 +340,7 @@ nav.menu{
   animation: badgeIn .7s cubic-bezier(.19,.82,.28,1) .25s both;
 }
 @keyframes badgeIn{ from{ opacity:0; transform:translateY(-14px); } to{ opacity:1; transform:translateY(0); } }
-.order-badge:hover{ transform:scale(1.04); }
-@media (max-width:640px){
-  .order-badge{ top:0.7rem; right:0.7rem; width:56px; }
-}
+@media (hover:hover){ .order-badge:hover{ transform:scale(1.04); } }
 
 /* ---------- Barre de progression de lecture ---------- */
 .progress-bar{
@@ -335,21 +416,15 @@ main{ max-width:740px; margin:0 auto; padding: 13rem 1.75rem 2rem; }
 .sitemap__list{ display:flex; flex-direction:column; gap:.6rem; }
 .sitemap__list a{
   font-size:.94rem; color:var(--graphite); text-decoration:none;
-  border-bottom:1px solid transparent; width:max-content;
+  border-bottom:1px solid transparent; width:fit-content; max-width:100%;
   transition:border-color .25s cubic-bezier(.4,0,.2,1), color .25s ease, transform .25s cubic-bezier(.4,0,.2,1);
 }
-.sitemap__list a:hover{ color:var(--ink); border-bottom-color:var(--ink); transform:translateX(4px); }
+@media (hover:hover){ .sitemap__list a:hover{ color:var(--ink); border-bottom-color:var(--ink); transform:translateX(4px); } }
 .sitemap__list a[aria-current="page"]{ color:var(--ink); font-weight:600; border-bottom-color:var(--ink); pointer-events:none; }
 
 .js-reveal-ready .sitemap{ opacity:0; transform:translateY(26px); transition: opacity .8s cubic-bezier(.19,.82,.28,1), transform .8s cubic-bezier(.19,.82,.28,1); }
 .js-reveal-ready .sitemap.is-visible{ opacity:1; transform:translateY(0); }
 
-@media (max-width:640px){
-  .sitemap{ padding:2.2rem 1.25rem 5.5rem; border-top-width:2px; }
-  .sitemap__title{ font-size:1.15rem; }
-  .sitemap__grid{ grid-template-columns:1fr; gap:2rem; }
-  .sitemap__list a{ font-size:1rem; padding:.15rem 0; }
-}
 
 /* ---------- SCROLL REVEAL (Intersection Observer) ----------
    Progressive enhancement : sans JS ou avec "reduced motion", le
@@ -388,34 +463,126 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
   background-image:url('logo-footer.png');
 }
 .footer__name{ font-family:'Fraunces', serif; font-size:1.15rem; margin:0 0 0.3rem; color:#fff; }
-.footer__meta{ font-size:0.85rem; color:#B9B7B1; line-height:1.7; }
+.footer__meta{ font-size:0.85rem; color:#B9B7B1; line-height:1.7; overflow-wrap:anywhere; }
 .footer__meta a{ color:#fff; text-decoration:underline; text-underline-offset:2px; transition:opacity .2s ease; }
 .footer__meta a:hover{ opacity:.7; }
 .footer__note{ font-size:0.77rem; color:rgba(255,255,255,0.38); max-width:320px; line-height:1.6; }
-.footer__legal{ font-size:0.76rem; color:rgba(255,255,255,0.55); max-width:640px; line-height:1.7; margin-top:1.4rem; padding-top:1.4rem; border-top:1px solid rgba(255,255,255,0.12); }
+.footer__legal{ flex-basis:100%; font-size:0.76rem; color:rgba(255,255,255,0.55); max-width:640px; line-height:1.7; margin-top:1.4rem; padding-top:1.4rem; border-top:1px solid rgba(255,255,255,0.12); }
 .footer__legal a{ color:rgba(255,255,255,0.75); text-decoration:underline; }
 
-@media (max-width:1024px){
-  .menu__home{ border-right:none; }
-  .footer__inner{ flex-direction:column; }
-  .photo-header--page{ height:300px; }
-  .photo-header__content{ padding:2.2rem 1.5rem; }
-  .photo-header--home .photo-header__content{ padding-bottom:5rem; }
-  .photo-header--page .photo-header__content{ padding-bottom:3rem; }
-  main{ padding:8rem 1.25rem 1.5rem; }
-  .sitemap{ padding:2.2rem 1.25rem 6rem; }
-  .home-intro{ padding:4.5rem 1.4rem 5.5rem; }
-  .footer__inner{ padding:5rem 1.25rem 4rem; }
+/* =====================================================================
+   RESPONSIVE — du plus grand au plus petit écran.
+   Le desktop (>=1280px) reste la référence : rien n'est modifié au-dessus.
+   ===================================================================== */
 
-  /* Sur mobile et tablette, le menu déroulant du haut disparaît entièrement :
-     seul le nom (retour à l'accueil) reste. La navigation se fait via le
-     plan du site complet, affiché en bas de chaque page (voir .sitemap). */
+/* ---- Ordinateurs portables compacts (1024 → 1279px) : menu resserré pour tenir sur une ligne ---- */
+@media (max-width:1279px){
+  .menu__home{ padding:1.3rem 1.35rem; }
+  .menu__trigger{ padding:1.3rem 1.05rem; }
+  .menu__trigger::after{ left:1rem; right:1rem; }
+}
+
+/* ---- Tablettes (768 → 1023px) : navigation burger, mise en page resserrée ---- */
+@media (max-width:1023px){
+  /* Navigation */
   .menu__item{ display:none; }
+  .menu__row{ flex-wrap:nowrap; align-items:center; min-height:60px; padding-right:92px; }
+  .menu__home{ border-right:none; padding:0 1.5rem; min-height:60px; }
+  .menu__burger{ display:inline-flex; margin-left:auto; }
+  .menu__drawer{ display:block; }
+  .menu__drawer-grid{ grid-template-columns:1fr 1fr; }
+  .order-badge{ width:62px; top:13px; right:16px; }
+
+  /* Bandeaux photo */
+  .photo-header--home{ min-height:74vh; min-height:74svh; }
+  .photo-header--page{ height:330px; }
+  .photo-header__content{ padding:2.8rem 2.5rem; }
+  .photo-header--home .photo-header__content{ padding-bottom:5.5rem; }
+  .photo-header--page .photo-header__content{ padding-bottom:3.2rem; }
+
+  /* Contenu */
+  main{ padding:7rem 2.5rem 1.5rem; }
+  .home-intro{ padding:5.5rem 2.5rem 6rem; }
+  .sitemap{ padding:2.6rem 2.5rem 6rem; }
+
+  /* Footer : cachet à gauche, coordonnées à droite, mentions en pleine largeur */
+  .footer__inner{
+    display:grid; grid-template-columns:150px 1fr; gap:2.2rem 3rem;
+    padding:5.5rem 2.5rem 4.5rem; align-items:start;
+  }
+  .footer__logo{ width:150px; grid-row:span 2; }
+  .footer__note{ max-width:none; }
+  .footer__legal{ grid-column:1 / -1; margin-top:.4rem; }
+}
+
+/* ---- Téléphones (≤ 767px) ---- */
+@media (max-width:767px){
+  /* Navigation */
+  .menu__row{ padding-right:80px; }
+  .menu__home{ padding:0 1.25rem; font-size:.98rem; }
+  .menu__drawer-inner{ padding:.8rem 1.25rem 2.2rem; }
+  .menu__drawer-grid{ grid-template-columns:1fr; gap:0; }
+  .order-badge{ width:56px; top:15px; right:14px; }
+
+  /* Accueil : bandeau photo */
+  .photo-header--home{ min-height:84vh; min-height:84svh; }
+  .photo-header--home .photo-header__img-inner{ background-position:58% 40%; }
+  .photo-header__content{ padding:2rem 1.25rem; }
+  .photo-header--home .photo-header__content{ padding-bottom:4.2rem; }
+  .hero__eyebrow{ font-size:.8rem; margin-bottom:.9rem; }
+  .hero__name{ font-size:clamp(2.15rem, 10vw, 2.9rem); line-height:1.06; }
+  .hero__title{ font-size:1.08rem; margin-bottom:1rem; }
+  .hero__loc{ font-size:.84rem; line-height:1.55; max-width:32ch; }
+
+  /* Pages : bandeau photo */
+  .photo-header--page{ height:270px; }
+  .photo-header--page .photo-header__img-inner{ background-position:55% 62%; }
+  .photo-header--page .photo-header__content{ padding-bottom:2.4rem; }
+  .breadcrumb{ font-size:.78rem; }
+  .banner__title{ font-size:clamp(1.6rem, 7vw, 2.05rem); line-height:1.15; }
+
+  /* Contenu */
+  main{ padding:4.5rem 1.25rem 1rem; }
+  .group__head{ margin-bottom:2.6rem; }
+  .group__title{ font-size:1.75rem; }
+  .group__rule{ margin:1.9rem 0 1.5rem; }
+  .group__lede{ font-size:1.05rem; }
+  .block{ padding:3rem 0; }
+  .block__title{ font-size:1.1rem; }
+  .block p{ font-size:1rem; line-height:1.72; }
+
+  .home-intro{ padding:3.8rem 1.25rem 4.2rem; }
+  .home-intro__lede{ font-size:1.32rem; max-width:22ch; }
+  .home-intro__body{ font-size:1rem; line-height:1.72; }
+
+  .sitemap{ padding:2.4rem 1.25rem 4.5rem; }
+  .sitemap__title{ font-size:1.1rem; margin-bottom:1.8rem; }
+  .sitemap__grid{ grid-template-columns:1fr 1fr; gap:2rem 1.5rem; }
+  .sitemap__list{ gap:.15rem; }
+  .sitemap__list a{ font-size:.95rem; padding:.45rem 0; }
+
+  /* Footer : une colonne */
+  .footer__inner{ grid-template-columns:1fr; gap:2rem; padding:4.2rem 1.25rem 3.2rem; }
+  .footer__logo{ width:160px; grid-row:auto; }
+}
+
+/* ---- Petits téléphones (≤ 480px) : plan du site sur une colonne ---- */
+@media (max-width:480px){
+  .sitemap__grid{ grid-template-columns:1fr; gap:1.8rem; }
+}
+
+/* ---- Très petits écrans (≤ 359px) : le libellé "Menu" laisse place à l'icône seule ---- */
+@media (max-width:359px){
+  .menu__home{ padding:0 1rem; font-size:.92rem; }
+  .menu__burger{ padding:.5rem .75rem; }
+  .menu__burger-label--open, nav.menu.is-open .menu__burger-label--close{ display:none; }
+  .photo-header__content{ padding-left:1rem; padding-right:1rem; }
+  main, .home-intro, .sitemap{ padding-left:1rem; padding-right:1rem; }
 }
 
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior:auto; }
-  .menu__caret, .menu__panel, .hero__eyebrow, .hero__name, .hero__title, .hero__loc, .breadcrumb, .banner__title, .photo-header__img-inner, .page, .group__head, .block, .sitemap, .home-intro, .home-intro__rule, .menu__home, .order-badge{ transition:none; animation:none; }
+  .menu__caret, .menu__panel, .hero__eyebrow, .hero__name, .hero__title, .hero__loc, .breadcrumb, .banner__title, .photo-header__img-inner, .page, .group__head, .block, .sitemap, .home-intro, .home-intro__rule, .menu__home, .menu__item, .order-badge, .menu__drawer, .menu__drawer-group, .menu__burger-icon i{ transition:none; animation:none; }
   .photo-header__img{ transform:none !important; }
   .photo-header__img-inner{ transform:none !important; }
 }
@@ -477,6 +644,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#normes" data-target="normes">Les normes de notre profession</a>
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -582,6 +790,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#normes" data-target="normes">Les normes de notre profession</a>
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -695,6 +944,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
     <main>
@@ -804,6 +1094,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#normes" data-target="normes">Les normes de notre profession</a>
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -917,6 +1248,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
     <main>
@@ -1026,6 +1398,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#normes" data-target="normes">Les normes de notre profession</a>
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1139,6 +1552,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
     <main>
@@ -1248,6 +1702,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#normes" data-target="normes">Les normes de notre profession</a>
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1361,6 +1856,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
     <main>
@@ -1470,6 +2006,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#normes" data-target="normes">Les normes de notre profession</a>
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1583,6 +2160,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
     <main>
@@ -1692,6 +2310,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#normes" data-target="normes">Les normes de notre profession</a>
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1805,6 +2464,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
     <main>
@@ -1914,6 +2614,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#normes" data-target="normes">Les normes de notre profession</a>
         <a href="#serment" data-target="serment">Le serment de l'expert-comptable</a>
         <a href="#process" data-target="process">Mes process</a>
+      </div>
+    </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -2027,6 +2768,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
     <main>
@@ -2138,6 +2920,47 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
         <a href="#process" data-target="process">Mes process</a>
       </div>
     </div>
+    <button class="menu__burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span class="menu__burger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="menu__burger-label--open">Menu</span><span class="menu__burger-label--close">Fermer</span>
+    </button>
+    <div class="menu__drawer">
+      <div class="menu__drawer-inner">
+        <a class="menu__drawer-home" href="#home" data-target="home">Accueil <span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+        <div class="menu__drawer-grid">
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">I.</span><span class="menu__drawer-name">Mon CV</span></p>
+            <a href="#histoire" data-target="histoire">Mon histoire<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#parcours" data-target="parcours">Mon parcours<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#diplomes" data-target="diplomes">Mes diplômes<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">II.</span><span class="menu__drawer-name">Ma Vision</span></p>
+            <a href="#philosophie" data-target="philosophie">Ma philosophie de travail<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#positionnement" data-target="positionnement">Mon positionnement<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#logo" data-target="logo">Sens de mon logo<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">III.</span><span class="menu__drawer-name">Mon accompagnement</span></p>
+            <a href="#creation" data-target="creation">Création d'entreprises & juridique<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#compta-fiscal" data-target="compta-fiscal">Comptabilité & Fiscalité<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#gestion" data-target="gestion">Gestion & quotidien<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">IV.</span><span class="menu__drawer-name">Mes outils</span></p>
+            <a href="#pennylane" data-target="pennylane">Pennylane<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#silae" data-target="silae">Silae<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#rca" data-target="rca">RCA<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="menu__drawer-group">
+            <p class="menu__drawer-label"><span class="menu__drawer-num">V.</span><span class="menu__drawer-name">Mes process</span></p>
+            <a href="#normes" data-target="normes">Les normes de notre profession<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#serment" data-target="serment">Le serment de l'expert-comptable<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+            <a href="#process" data-target="process">Mes process<span class="menu__drawer-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
     <main>
@@ -2239,7 +3062,27 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
     bar.style.width = pct + '%';
   }
 
+  function closeDrawers(){
+    document.querySelectorAll('nav.menu.is-open').forEach(function(navEl){
+      navEl.classList.remove('is-open');
+      var b = navEl.querySelector('.menu__burger');
+      if(b){ b.setAttribute('aria-expanded','false'); b.setAttribute('aria-label','Ouvrir le menu'); }
+    });
+  }
+
+  function openDrawer(navEl){
+    closeDrawers();
+    // Si la barre n'est pas encore collée en haut (ex. sous la photo d'accueil),
+    // on la remonte en haut de l'écran pour que le panneau ait toute la hauteur.
+    var top = navEl.getBoundingClientRect().top;
+    if(top > 1){ window.scrollTo({ top: window.scrollY + top, behavior: 'smooth' }); }
+    navEl.classList.add('is-open');
+    var b = navEl.querySelector('.menu__burger');
+    if(b){ b.setAttribute('aria-expanded','true'); b.setAttribute('aria-label','Fermer le menu'); }
+  }
+
   function performPageSwap(id){
+    closeDrawers();
     if(pageIds.indexOf(id) === -1){ id = 'home'; }
     document.querySelectorAll('.page').forEach(function(p){
       p.classList.toggle('active', p.id === id);
@@ -2268,6 +3111,13 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
   }
 
   document.addEventListener('click', function(e){
+    var burger = e.target.closest('.menu__burger');
+    if(burger){
+      var navEl = burger.closest('nav.menu');
+      if(navEl.classList.contains('is-open')){ closeDrawers(); } else { openDrawer(navEl); }
+      return;
+    }
+    if(!e.target.closest('nav.menu.is-open')){ closeDrawers(); }
     var link = e.target.closest('[data-target]');
     if(link){
       e.preventDefault();
@@ -2313,7 +3163,13 @@ footer{ background:var(--ink); color:#DCDAD4; margin-top:2rem; }
       ticking = true;
     }
   }, {passive:true});
-  window.addEventListener('resize', function(){ updateParallax(); updateProgress(); });
+  window.addEventListener('resize', function(){
+    updateParallax(); updateProgress();
+    if(window.innerWidth >= 1024){ closeDrawers(); }
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ closeDrawers(); }
+  });
 
   (function initScrollReveal(){
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
